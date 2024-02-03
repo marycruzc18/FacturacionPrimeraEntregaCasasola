@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Entity
@@ -25,38 +27,25 @@ public class Cliente {
 
     @Column
 
-    private String documento;
+    private LocalDate fechaNacimiento;
 
-    //se crean los getters y setters
-    public Long getId() {
-        return id;
+    @Transient
+    private int edad;
+
+    // Constructor sin argumentos necesario para JPA
+    public Cliente() {
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
+    // Constructor con todos los atributos
+    public Cliente(String nombre, String apellido, LocalDate fechaNacimiento) {
         this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
         this.apellido = apellido;
+        this.fechaNacimiento = fechaNacimiento;
+        this.edad = calcularEdad();
     }
 
-    public String getDocumento() {
-        return documento;
-    }
 
-    public void setDocumento(String documento) {
-        this.documento = documento;
+    // Método para calcular la edad
+    private int calcularEdad() {
+        return LocalDate.now().getYear() - fechaNacimiento.getYear();
     }
 }
